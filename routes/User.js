@@ -1,6 +1,8 @@
 const express = require('express');
 const userRouter = express.Router();
 const User = require('../controller/User.js');
+// const { body , validationResult} = require('express-validator');
+
 // userRouter.post('/',(req,res) =>
 // {
 //     // const user = new User(req.body);
