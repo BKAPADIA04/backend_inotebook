@@ -86,3 +86,14 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({'Error' : "Internal Server Error"});
   }
 };
+
+exports.decodeUser = async (req,res) => {
+  try {
+    const id = req.user.id;
+    const user = await User.findOne({_id : id}).select('-password');
+    res.send(user);
+  } catch (err) {
+    console.error(err.errorMsg);
+    res.status(500).json({'Error' : "Internal Server Error"});
+  }
+}

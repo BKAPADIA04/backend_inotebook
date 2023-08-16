@@ -2,6 +2,8 @@ const express = require('express');
 const userRouter = express.Router();
 const User = require('../controller/User.js');
 const { body } = require('express-validator');
+const decodeMiddleware = require('../middleware/Login.js');
+const decoder = decodeMiddleware.decoder;
 // const { body , validationResult} = require('express-validator');
 
 // userRouter.post('/',(req,res) =>
@@ -28,5 +30,7 @@ userRouter.post('/login',[
     body('emailid','Enter a valid email address').isEmail(),
     body('password','Password cannot be blank').exists(),
 ],User.loginUser);
+
+userRouter.post('/decode',decoder,User.decodeUser);
 
 exports.userRoute = userRouter;
