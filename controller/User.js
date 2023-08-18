@@ -22,8 +22,8 @@ exports.createUser = async (req, res) => {
     return;
   }
 
-  const user = new User(req.body);
   try {
+    const user = new User(req.body);
     const password = req.body.password;
     const salt = await bcrypt.genSalt(10);
     const secPass = await bcrypt.hash(password, salt);
@@ -51,6 +51,7 @@ exports.createUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
+  try {
   const errors = validationResult(req);
   const arr = errors.array();
   let printmsg;
@@ -63,7 +64,6 @@ exports.loginUser = async (req, res) => {
   }
 
   const {emailid,password} = req.body;
-  try {
     let user = await User.findOne({emailid : emailid});
     if(!user) {
         return res.status(400).json({'Error' : 'Please try to login with correct credentials'});
