@@ -12,4 +12,7 @@ notesRouter.post('/insertNote',decoder,[
     body('tag','Enter a valid tag, atleast 3 characters').isLength({min : 3}),
     body('description','Desription should atleast have 5 characters').isLength({min : 5})
 ],Note.insertNote);
+notesRouter.put('/updateNote/:id',decoder,Note.updateNote);
+notesRouter.delete('/deleteNote/:id',decoder,Note.deleteNote);
+
 exports.notesRoute = notesRouter;
