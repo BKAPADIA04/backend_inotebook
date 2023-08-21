@@ -26,7 +26,7 @@ exports.insertNote = async (req, res) => {
     res.json(doc);
   } catch (err) {
     console.error(err.errorMsg);
-    res.status(500).json({ Error: "Internal Server Error" });
+    res.status(500).json({ 'Error': 'Internal Server Error' });
   }
 };
 
@@ -58,10 +58,11 @@ exports.updateNote = async (req, res) => {
       { $set: newNote },
       { new: true }
     );
-    res.status(204).json({ note });
+    console.log(note);
+    res.status(202).json( note );
   } catch (err) {
     console.error(err);
-    res.status(500).json({ Error: "Internal Server Error" });
+    res.status(500).json({ 'Error': 'Internal Server Error'});
   }
 };
 
@@ -78,10 +79,10 @@ exports.deleteNote = async (req, res) => {
 
     note = await Note.findByIdAndDelete(req.params.id);
     res
-      .status(204)
-      .json({ Message: "Note has been deleted successfully ", Note: note });
+      .status(202)
+      .json({ 'Message': 'Note has been deleted successfully', 'Note': {note} });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ Error: "Internal Server Error" });
+    res.status(500).json({ 'Error': 'Internal Server Error' });
   }
 };
