@@ -33,9 +33,9 @@ exports.createUser = async (req, res) => {
     const data = {
       user: {
         id: user.id,
-      },
+      }
     };
-    const authToken = jwt.sign(data, process.env.JWT_SECRET);
+    const authToken = jwt.sign(data, `${process.env.JWT_SECRET}`);
     res.status(201).json({ authToken: authToken });
   } catch (err) {
     // console.log(err);
@@ -77,12 +77,12 @@ exports.loginUser = async (req, res) => {
           id: user.id,
         },
     };
-    const authToken = jwt.sign(data, process.env.JWT_SECRET);
+    const authToken = jwt.sign(data, `${process.env.JWT_SECRET}`);
     res.status(201).json({ authToken: authToken });
   }
 
   catch(err) {
-    console.error(err.errorMsg);
+    console.error(err);
     res.status(500).json({'Error' : "Internal Server Error"});
   }
 };
@@ -93,7 +93,7 @@ exports.decodeUser = async (req,res) => {
     const user = await User.findOne({_id : id}).select('-password');
     res.send(user);
   } catch (err) {
-    console.error(err.errorMsg);
+    console.error(err);
     res.status(500).json({'Error' : "Internal Server Error"});
   }
 }

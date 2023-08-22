@@ -3,7 +3,7 @@ const express = require('express')
 connectToMongo();
 
 const server = express();
-const port = 3000;
+const port = 8080;
 
 server.get('/', (req, res) => {
   res.send('Hello World!')
@@ -18,5 +18,5 @@ server.use('/api/user_auth',userRouter.userRoute);
 server.use('/api/notes',notesRouter.notesRoute);
 
 server.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`iNoteBook App listening on port ${port}`)
 })

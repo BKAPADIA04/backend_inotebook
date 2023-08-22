@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const decodeMiddleware = (req, res, next) => {
   //Get the user from the JWT authToken and add it to the object
@@ -9,7 +10,7 @@ const decodeMiddleware = (req, res, next) => {
       .json({ "Error Message": "Please authenicate using a valid token" });
   }
   try {
-    const data = jwt.verify(token, process.env.JWT_SECRET);
+    const data = jwt.verify(token, `${process.env.JWT_SECRET}`);
     req.user = data.user;
     next();
   } catch (err) {
