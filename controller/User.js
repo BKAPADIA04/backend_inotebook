@@ -11,14 +11,17 @@ const jwt = require("jsonwebtoken");
 exports.createUser = async (req, res) => {
   const errors = validationResult(req);
   const arr = errors.array();
+  let success = true;
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: arr });
+    success = false;
+    return res.status(400).json({ success:success,errors: arr });
   }
   const prevUsers = await User.findOne({ emailid: req.body.emailid });
   if (!!prevUsers) {
+    success = false;
     res
       .status(400)
-      .json({ "Error Message": "Account with this emailid already exists" });
+      .json({ success:success,"Error Message": "Account with this emailid already exists" });
     return;
   }
 
@@ -36,7 +39,7 @@ exports.createUser = async (req, res) => {
       }
     };
     const authToken = jwt.sign(data, `${process.env.JWT_SECRET}`);
-    res.status(201).json({ authToken: authToken });
+    res.status(201).json({ success:success,authToken: authToken });
   } catch (err) {
     // console.log(err);
     // if(!!err && err.keyPattern.emailid === 1)
@@ -46,7 +49,8 @@ exports.createUser = async (req, res) => {
     // }
     // else
     console.log(err);
-    res.status(403).json(err);
+    success = false;
+    res.status(403).json({success:success,err});
   }
 };
 
@@ -60,7 +64,7 @@ exports.loginUser = async (req, res) => {
     for (const errorObject of arr) {
       const errorMsg = errorObject.msg;
       printmsg = errorMsg;
-      success = false
+      success = false;
     }
     return res.status(400).json({ success:success,errors: printmsg });
   }
