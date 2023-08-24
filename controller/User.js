@@ -55,22 +55,26 @@ exports.loginUser = async (req, res) => {
   const errors = validationResult(req);
   const arr = errors.array();
   let printmsg;
+  let success = true;
   if (!errors.isEmpty()) {
     for (const errorObject of arr) {
       const errorMsg = errorObject.msg;
       printmsg = errorMsg;
+      success = false
     }
-    return res.status(400).json({ errors: printmsg });
+    return res.status(400).json({ success:success,errors: printmsg });
   }
 
   const {emailid,password} = req.body;
     let user = await User.findOne({emailid : emailid});
     if(!user) {
-        return res.status(400).json({'Error' : 'Please try to login with correct credentials'});
+        success = false;
+        return res.status(400).json({success : success,'Error' : 'Please try to login with correct credentials'});
     }
     const passwordCompare = await bcrypt.compare(password,user.password);
     if(!passwordCompare) {
-        return res.status(400).json({'Error' : 'Please try to login with correct credentials'});
+      success = false;
+        return res.status(400).json({success : success,'Error' : 'Please try to login with correct credentials'});
     }
     const data = {
         user: {
@@ -78,7 +82,7 @@ exports.loginUser = async (req, res) => {
         },
     };
     const authToken = jwt.sign(data, `${process.env.JWT_SECRET}`);
-    res.status(201).json({ authToken: authToken });
+    res.status(201).json({ success:success,authToken: authToken });
   }
 
   catch(err) {
