@@ -21,7 +21,7 @@ exports.createUser = async (req, res) => {
     success = false;
     res
       .status(400)
-      .json({ success:success,"Error Message": "Account with this emailid already exists" });
+      .json({ success:success,"Error": "Account with this emailid already exists" });
     return;
   }
 
