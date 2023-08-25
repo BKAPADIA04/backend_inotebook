@@ -14,14 +14,14 @@ exports.createUser = async (req, res) => {
   let success = true;
   if (!errors.isEmpty()) {
     success = false;
-    return res.status(400).json({ success:success,errors: arr });
+    return res.status(400).json({ success:success,error: arr });
   }
   const prevUsers = await User.findOne({ emailid: req.body.emailid });
   if (!!prevUsers) {
     success = false;
     res
       .status(400)
-      .json({ success:success,"Error": "Account with this emailid already exists" });
+      .json({ success:success,"error": "Account with this emailid already exists" });
     return;
   }
 
@@ -66,7 +66,7 @@ exports.loginUser = async (req, res) => {
       printmsg = errorMsg;
       success = false;
     }
-    return res.status(400).json({ success:success,errors: printmsg });
+    return res.status(400).json({ success:success,error: printmsg });
   }
 
   const {emailid,password} = req.body;
@@ -91,7 +91,7 @@ exports.loginUser = async (req, res) => {
 
   catch(err) {
     console.error(err);
-    res.status(500).json({'Error' : "Internal Server Error"});
+    res.status(500).json({'error' : "Internal Server Error"});
   }
 };
 
@@ -102,6 +102,6 @@ exports.decodeUser = async (req,res) => {
     res.send(user);
   } catch (err) {
     console.error(err);
-    res.status(500).json({'Error' : "Internal Server Error"});
+    res.status(500).json({'error' : "Internal Server Error"});
   }
 }
